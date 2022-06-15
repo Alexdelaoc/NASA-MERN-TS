@@ -4,8 +4,9 @@
   "description": "API that will be delivering data to the front of our TS MERN",
   "main": "index.js",
   "scripts": {
-    "build": "tsc",
-    "dev": "ts-node-dev index.ts"
+    "start": "node dist/app.js",
+    "build": "tsc -p .",
+    "dev": "ts-node-dev ./src/app.ts"
   },
   "repository": {
     "type": "git",
