@@ -12,7 +12,7 @@ const uri: string = `mongodb+srv://${username}:${password}@${cluster}.mongodb.ne
 const mongoDBConnection = async () => {
     try {
         await mongoose.connect(uri);
-        console.log('Now connected to MongoDB Atlas...')
+        console.log('Now connected to MongoDB Atlas...');
     } catch (error) {
         console.log(`Unable to connect to the Database: ${error}`);
     }
