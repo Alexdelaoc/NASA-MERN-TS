@@ -8,7 +8,6 @@ const dbname: string | undefined = process.env.MONGODB_DBNAME;
 
 const uri: string = `mongodb+srv://${username}:${password}@${cluster}.mongodb.net/${dbname}?retryWrites=true&w=majority`;
 
-
 const mongoDBConnection = async () => {
     try {
         await mongoose.connect(uri);
