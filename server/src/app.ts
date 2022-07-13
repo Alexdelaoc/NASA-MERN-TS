@@ -1,19 +1,31 @@
+import { mongoDBConnection } from './config/mongodb';
 require('dotenv').config();
 
 import express from 'express'
 import cors from 'cors';
 import helmet from 'helmet';
-
-
-const mongoDBConnection = require('./config/mongodb.ts');
+import morgan from 'morgan';
 
 const app = express();
 
 const port = process.env.PORT;
 
+import apiRouter from './routes/apiRoutes';
+
 app.use(express.json);
 app.use(express.urlencoded);
 
+// Cors
+app.use(cors());
+
+// Helmet
+app.use(helmet());
+
+// Morgan
+app.use(morgan('dev'));
+
+// Web router.
+app.use('/api', apiRouter);
 
 (async () => {
     try {
@@ -24,4 +36,4 @@ app.use(express.urlencoded);
     } catch (error) {
         console.log(`There was an error... ${error}`);
     }
-})() // '(function here)()' executes the function automatically. No need to invoke it roght after defining it.
+})(); // '(function here)()' automatically executes the function. No need to invoke it right after defining it.

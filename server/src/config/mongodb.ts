@@ -8,7 +8,7 @@ const dbname: string | undefined = process.env.MONGODB_DBNAME;
 
 const uri: string = `mongodb+srv://${username}:${password}@${cluster}.mongodb.net/${dbname}?retryWrites=true&w=majority`;
 
-const mongoDBConnection = async () => {
+export const mongoDBConnection = async () => {
     try {
         await mongoose.connect(uri);
         console.log('Now connected to MongoDB Atlas...');
@@ -16,5 +16,3 @@ const mongoDBConnection = async () => {
         console.log(`Unable to connect to the Database: ${error}`);
     }
 };
-
-module.exports = mongoDBConnection;
