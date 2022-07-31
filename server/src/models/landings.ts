@@ -32,7 +32,7 @@ const landingSchema = new Schema({
         trim: true
     },
     year: {
-        type: String,
+        type: Date,
         required: true,
         trim: true
     },
@@ -53,6 +53,5 @@ const landingSchema = new Schema({
     }  
 
 });
-
 
 export default model('Landing', landingSchema);
