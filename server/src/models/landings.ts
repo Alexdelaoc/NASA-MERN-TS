@@ -1,9 +1,20 @@
-import { Schema, model } from "mongoose"
+import { Schema, Document, model } from "mongoose"
+
+export interface iLanding extends Document {
+    name: string,
+    id: string,
+    nametype: string,
+    recclass: string,
+    mass: string,
+    fall: string,
+    reclat: string,
+    reclong: string,
+}
 
 const landingSchema = new Schema({
     name: {
         type: String,
-        required: false,
+        required: true,
         trim: true
     },
     id: {
@@ -33,7 +44,7 @@ const landingSchema = new Schema({
     },
     year: {
         type: Date,
-        required: true,
+        required: false,
         trim: true
     },
     reclat: {
@@ -54,4 +65,4 @@ const landingSchema = new Schema({
 
 });
 
-export default model('Landing', landingSchema);
+export default model<iLanding>('Landing', landingSchema);
