@@ -1,5 +1,5 @@
-import { mongoDBConnection } from './config/mongodb';
 require('dotenv').config();
+import { mongoDBConnection } from './config/mongodb';
 
 import express from 'express'
 import cors from 'cors';
@@ -12,8 +12,7 @@ const port = process.env.PORT;
 
 import apiRouter from './routes/apiRoutes';
 
-app.use(express.json);
-app.use(express.urlencoded);
+app.use(express.json());
 
 // Cors
 app.use(cors());
