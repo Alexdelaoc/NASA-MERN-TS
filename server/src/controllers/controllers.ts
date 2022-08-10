@@ -17,16 +17,16 @@ export const getAllLandings = async (req: Request, res: Response) => {
 export const getLandingsByName = async (req: Request, res: Response) => {
     try {
         const name  = req.params.name;
-        const filter = { name: name };
+        const filter = { name: name.toUpperCase() };
         const data = await landingSchema.find(filter);
-        if (!data) {
+        if (data.length == 0) {
             res.status(200).json({msg: "No such landings for the name provided"})
         } else {
-            res.status(200).json(data)
+            res.status(200).json(data);
         }
     } catch (error) {
         console.log(error)
-        res.status(400).json({msg: "Bad request."})
+        res.status(400).json({msg: "Something went wrong. Bad request."})
     }
 };
 
@@ -41,15 +41,15 @@ export const getLandingsByMass = async (req: Request, res: Response) => {
             res.status(200).json(data)
         }
     } catch (error) {
-        console.log(error)
+        console.log(error);
         res.status(400).json({ msg: "Bad request." })
     }
 };
 
 export const getLandingsByClass = async (req: Request, res: Response) => {
     try {
-        const recclass = req.params.class
-        const filter = { recclass: recclass }
+        const recclass = req.params.class;
+        const filter = { recclass: recclass.toUpperCase() };
         const query = await landingSchema.find(filter).exec();
         if (query.length == 0) {
             res.status(200).json({ msg: "No such landings for the class provided." })
@@ -57,7 +57,34 @@ export const getLandingsByClass = async (req: Request, res: Response) => {
             res.status(200).json(query)
         }
     } catch (err) {
-        console.log(err)
+        console.log(err);
         res.status(400).json({ msg: "Bad Request" })
+    }
+};
+
+export const createLanding = async (req: Request, res: Response) => {
+    try {
+        const { name, id, nametype, recclass, mass, fall, reclat, reclong, geolocation } = req.body
+        const newLanding: iLanding = await new landingSchema(req.body);
+        newLanding.save((err, newLanding) => {
+            err ? console.error(err) : console.log(`${newLanding.name} saved`)
+        }) 
+        res.status(201).json({msg: `${newLanding.name} saved in the database successfully.`})
+    } catch (error) {
+        console.log(error);
+        res.status(400)
+    }
+};
+
+export const editLanding = async (req: Request, res: Response) => {
+    try {
+        const { name, id, nametype, recclass, mass, fall, reclat, reclong, geolocation } = req.body;
+        const update = req.body;
+        const filter = { id: id };
+        const landingToUpdate = await landingSchema.findOneAndUpdate(update, filter, { new: true });
+        res.status(201).json({msg: `Landing with ID ${filter.id} was updated successfully: ${landingToUpdate}`})
+    } catch (error) {
+        console.error(error);
+        res.status(400);
     }
 };

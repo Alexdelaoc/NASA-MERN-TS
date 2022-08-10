@@ -33,7 +33,7 @@ const landingSchema = new Schema({
         trim: true
     },
     mass: {
-        type: String,
+        type: Number,
         required: true,
         trim: true
     },
@@ -61,8 +61,7 @@ const landingSchema = new Schema({
         type: Object,
         required: false,
         trim: true
-    }  
-
+    }
 });
 
 export default model<iLanding>('Landing', landingSchema);
