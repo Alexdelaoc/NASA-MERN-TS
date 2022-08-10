@@ -1,9 +1,9 @@
-import { Router, Request, Response, NextFunction } from "express"; // Creating a new Router() object. Importing Express Types.
+import { Router } from "express"; // Creating a new Router() object. Importing Express Types.
+import { getAllLandings,} from "../controllers/controllers";
 const apiRouter: Router = Router();
 
+
 // Controllers here 👇
-apiRouter.get('/', (req: Request, res: Response) => {
-    res.send("Hello World").json;
-});
+apiRouter.get('/landings', getAllLandings);
 
 export default apiRouter
