@@ -1,5 +1,5 @@
 // REQUERIMENTOS
-import { Request, Response, NextFunction } from "express";
+import { Request, Response } from "express";
 import landingSchema, { iLanding } from './../models/landings';
 
 // LANDINGS //
@@ -32,7 +32,7 @@ export const getLandingsByName = async (req: Request, res: Response) => {
 
 export const getLandingsByMass = async (req: Request, res: Response) => {
     try {
-        const mass = req.params.mass;
+        const mass = parseInt(req.params.mass);
         const filter = { mass: mass };
         const data = await landingSchema.find(filter, "-_id");
         if (!data) {
@@ -68,11 +68,11 @@ export const createLanding = async (req: Request, res: Response) => {
         const newLanding: iLanding = await new landingSchema(req.body);
         newLanding.save((err, newLanding) => {
             err ? console.error(err) : console.log(`${newLanding.name} saved`)
-        }) 
+        });
         res.status(201).json({msg: `${newLanding.name} saved in the database successfully.`})
     } catch (error) {
         console.log(error);
-        res.status(400)
+        res.status(400).json({msg: "Bad request."})
     }
 };
 
@@ -81,10 +81,26 @@ export const editLanding = async (req: Request, res: Response) => {
         const { name, id, nametype, recclass, mass, fall, reclat, reclong, geolocation } = req.body;
         const update = req.body;
         const filter = { id: id };
-        const landingToUpdate = await landingSchema.findOneAndUpdate(update, filter, { new: true });
-        res.status(201).json({msg: `Landing with ID ${filter.id} was updated successfully: ${landingToUpdate}`})
+        await landingSchema.findOneAndUpdate(filter, update, { new: true })
+        .then(result =>{
+            res.status(201).json({ msg: `Landing with ID ${filter.id} was updated successfully: ${result}`})
+        })
     } catch (error) {
         console.error(error);
-        res.status(400);
+        res.status(400).json({msg: "Bad request."})
+    }
+};
+
+export const deleteLanding = async (req: Request, res: Response) => {
+    try {
+        const id = req.params.id;
+        await landingSchema.deleteOne({ id: id })
+        .then(result => {
+            console.log(result);
+            res.status(200).json({ msg: `${result.deletedCount} documents deleted.` })
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(400).json({msg: "Bad request"})
     }
 };

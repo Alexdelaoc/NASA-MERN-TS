@@ -5,7 +5,7 @@ export interface iLanding extends Document {
     id: string,
     nametype: string,
     recclass: string,
-    mass: string,
+    mass: number,
     fall: string,
     reclat: string,
     reclong: string,
