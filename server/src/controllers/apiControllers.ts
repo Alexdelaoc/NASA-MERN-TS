@@ -1,12 +1,14 @@
 // REQUERIMENTOS
 import { Request, Response } from "express";
-import landingSchema, { iLanding } from './../models/landings';
+import LandingSchema, { ILanding } from '../models/landings';
+import NeaSchema, { INea } from './../models/neas';
+
 
 // LANDINGS //
 
 export const getAllLandings = async (req: Request, res: Response) => {
     try {
-        let data = await landingSchema.find({});
+        let data = await LandingSchema.find({});
         res.status(200).json(data);
     } catch (error) {
         console.log(error)
@@ -18,14 +20,14 @@ export const getLandingsByName = async (req: Request, res: Response) => {
     try {
         const name  = req.params.name;
         const filter = { name: name.toUpperCase() };
-        const data = await landingSchema.find(filter);
+        const data = await LandingSchema.find(filter);
         if (data.length == 0) {
             res.status(200).json({msg: "No such landings for the name provided"})
         } else {
             res.status(200).json(data);
         }
     } catch (error) {
-        console.log(error)
+        console.log(error);
         res.status(400).json({msg: "Something went wrong. Bad request."})
     }
 };
@@ -34,7 +36,7 @@ export const getLandingsByMass = async (req: Request, res: Response) => {
     try {
         const mass = parseInt(req.params.mass);
         const filter = { mass: mass };
-        const data = await landingSchema.find(filter, "-_id");
+        const data = await LandingSchema.find(filter, "-_id");
         if (!data) {
             res.status(200).json({msg: "No such landings for the mass provided"})
         } else {
@@ -50,7 +52,7 @@ export const getLandingsByClass = async (req: Request, res: Response) => {
     try {
         const recclass = req.params.class;
         const filter = { recclass: recclass.toUpperCase() };
-        const query = await landingSchema.find(filter).exec();
+        const query = await LandingSchema.find(filter).exec();
         if (query.length == 0) {
             res.status(200).json({ msg: "No such landings for the class provided." })
         } else {
@@ -64,8 +66,8 @@ export const getLandingsByClass = async (req: Request, res: Response) => {
 
 export const createLanding = async (req: Request, res: Response) => {
     try {
-        const { name, id, nametype, recclass, mass, fall, reclat, reclong, geolocation } = req.body
-        const newLanding: iLanding = await new landingSchema(req.body);
+        const { name, id, nametype, recclass, mass, fall, reclat, reclong, geolocation } = req.body;
+        const newLanding: ILanding = await new LandingSchema(req.body);
         newLanding.save((err, newLanding) => {
             err ? console.error(err) : console.log(`${newLanding.name} saved`)
         });
@@ -81,7 +83,7 @@ export const editLanding = async (req: Request, res: Response) => {
         const { name, id, nametype, recclass, mass, fall, reclat, reclong, geolocation } = req.body;
         const update = req.body;
         const filter = { id: id };
-        await landingSchema.findOneAndUpdate(filter, update, { new: true })
+        await LandingSchema.findOneAndUpdate(filter, update, { new: true })
         .then(result =>{
             res.status(201).json({ msg: `Landing with ID ${filter.id} was updated successfully: ${result}`})
         })
@@ -94,7 +96,7 @@ export const editLanding = async (req: Request, res: Response) => {
 export const deleteLanding = async (req: Request, res: Response) => {
     try {
         const id = req.params.id;
-        await landingSchema.deleteOne({ id: id })
+        await LandingSchema.deleteOne({ id: id })
         .then(result => {
             console.log(result);
             res.status(200).json({ msg: `${result.deletedCount} documents deleted.` })

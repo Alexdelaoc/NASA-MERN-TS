@@ -1,6 +1,6 @@
 import { Schema, Document, model } from "mongoose"
 
-export interface iLanding extends Document {
+export interface ILanding extends Document {
     name: string,
     id: string,
     nametype: string,
@@ -11,7 +11,7 @@ export interface iLanding extends Document {
     reclong: string,
 }
 
-const landingSchema = new Schema({
+const LandingSchema = new Schema({
     name: {
         type: String,
         required: true,
@@ -64,4 +64,4 @@ const landingSchema = new Schema({
     }
 });
 
-export default model<iLanding>('Landing', landingSchema);
+export default model<ILanding>('Landing', LandingSchema);
