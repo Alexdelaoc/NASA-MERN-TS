@@ -8,7 +8,7 @@ import NeaSchema, { INea } from './../models/neas';
 
 export const getAllLandings = async (req: Request, res: Response) => {
     try {
-        let data = await LandingSchema.find({});
+        let data = await LandingSchema.find({}, "-_id");
         res.status(200).json(data);
     } catch (error) {
         console.log(error)
@@ -19,13 +19,13 @@ export const getAllLandings = async (req: Request, res: Response) => {
 export const getLandingsByName = async (req: Request, res: Response) => {
     try {
         const name  = req.params.name;
-        const filter = { name: name.toUpperCase() };
-        const data = await LandingSchema.find(filter);
+        const filter = { name: name.charAt(0).toUpperCase() + name.slice(1).toLowerCase() };
+        const data = await LandingSchema.find(filter, "-_id");
         if (data.length == 0) {
-            res.status(200).json({msg: "No such landings for the name provided"})
+            res.status(200).json({msg: "No such landings for the name provided"});
         } else {
             res.status(200).json(data);
-        }
+        };
     } catch (error) {
         console.log(error);
         res.status(400).json({msg: "Something went wrong. Bad request."})
@@ -52,7 +52,7 @@ export const getLandingsByClass = async (req: Request, res: Response) => {
     try {
         const recclass = req.params.class;
         const filter = { recclass: recclass.toUpperCase() };
-        const query = await LandingSchema.find(filter).exec();
+        const query = await LandingSchema.find(filter, "-_id");
         if (query.length == 0) {
             res.status(200).json({ msg: "No such landings for the class provided." })
         } else {
@@ -96,13 +96,25 @@ export const editLanding = async (req: Request, res: Response) => {
 export const deleteLanding = async (req: Request, res: Response) => {
     try {
         const id = req.params.id;
-        await LandingSchema.deleteOne({ id: id })
+        await LandingSchema.deleteMany({ id: id })
         .then(result => {
             console.log(result);
-            res.status(200).json({ msg: `${result.deletedCount} documents deleted.` })
+            result.deletedCount == 1 
+            ? res.status(200).json({ msg: `${result.deletedCount} landing deleted.` })
+            : res.status(200).json({ msg: `${result.deletedCount} landings deleted.` })
         });
     } catch (error) {
         console.error(error);
-        res.status(400).json({msg: "Bad request"})
+        res.status(400).json({msg: "Bad request"});
+    }
+};
+
+export const getAllNeas = async (req: Request, res: Response) => {
+    try {
+        let data = await NeaSchema.find({}, "-_id");
+        data.length == 0 ? res.status(400).json({msg: "Something went wrong"}) : res.status(200).json(data)
+    } catch (error) {
+        console.error(error);
+        res.status(400).json({msg: "Bad Request"})
     }
 };

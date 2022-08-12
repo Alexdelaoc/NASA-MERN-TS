@@ -13,6 +13,7 @@ const port = process.env.PORT;
 import apiRouter from './routes/apiRoutes';
 
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 // Cors
 app.use(cors());
