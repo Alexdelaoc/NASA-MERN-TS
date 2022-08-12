@@ -1,7 +1,8 @@
 // REQUERIMENTOS
 import { Request, Response } from "express";
-import LandingSchema, { ILanding } from '../models/landings';
-import NeaSchema, { INea } from './../models/neas';
+import { CallbackError } from "mongoose";
+import LandingSchema, { ILanding } from "./../models/landings";
+import NeaSchema, { INea } from "./../models/neas";
 
 
 // LANDINGS //
@@ -126,12 +127,27 @@ export const createNeas = async (req: Request, res: Response) => {
     try {
         const { designation, discovery_date, h_mag, moid_au, q_au_1, q_au_2, period_yr, i_deg, pha, orbit_class } = req.body;
         const newNea: INea = await new NeaSchema(req.body);
-        newNea.save((err, newNea) => {
+        newNea.save((err: CallbackError, newNea: INea) => {
             err
             ? res.status(200)
             : res.status(201).json({msg: `${newNea.designation}, ${newNea.orbit_class} saved in the database successfully.`})
         })
     } catch (error) {
         res.status(400).json({msg: "Bad Request."})
+    }
+};
+
+export const editNea = async (req: Request, res: Response) => {
+    try {
+        const { designation, discovery_date, h_mag, moid_au, q_au_1, q_au_2, period_yr, i_deg, pha, orbit_class } = req.body;
+        const update = req.body;
+        const filter = { designation: designation };
+        await NeaSchema.findOneAndUpdate(filter, update, {new: true})
+        .then(result => {
+            res.status(201).json({ msg: `Near Earth Object with designation ${filter.designation} was updated successfully: ${result}`})
+        })
+    } catch (error) {
+        console.error(error);
+        res.status(400).json({msg: "Bad request."})
     }
 };
