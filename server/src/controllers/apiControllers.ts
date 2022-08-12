@@ -69,9 +69,10 @@ export const createLanding = async (req: Request, res: Response) => {
         const { name, id, nametype, recclass, mass, fall, reclat, reclong, geolocation } = req.body;
         const newLanding: ILanding = await new LandingSchema(req.body);
         newLanding.save((err, newLanding) => {
-            err ? console.error(err) : console.log(`${newLanding.name} saved`)
+            err 
+            ? res.status(200).json({msg: `${err}`})
+            : res.status(201).json({msg: `${newLanding.name} saved in the database successfully.`})
         });
-        res.status(201).json({msg: `${newLanding.name} saved in the database successfully.`})
     } catch (error) {
         console.log(error);
         res.status(400).json({msg: "Bad request."})
@@ -112,9 +113,25 @@ export const deleteLanding = async (req: Request, res: Response) => {
 export const getAllNeas = async (req: Request, res: Response) => {
     try {
         let data = await NeaSchema.find({}, "-_id");
-        data.length == 0 ? res.status(400).json({msg: "Something went wrong"}) : res.status(200).json(data)
+        data.length == 0 
+        ? res.status(400).json({msg: "Something went wrong"}) 
+        : res.status(200).json(data)
     } catch (error) {
         console.error(error);
         res.status(400).json({msg: "Bad Request"})
+    }
+};
+
+export const createNeas = async (req: Request, res: Response) => {
+    try {
+        const { designation, discovery_date, h_mag, moid_au, q_au_1, q_au_2, period_yr, i_deg, pha, orbit_class } = req.body;
+        const newNea: INea = await new NeaSchema(req.body);
+        newNea.save((err, newNea) => {
+            err
+            ? res.status(200)
+            : res.status(201).json({msg: `${newNea.designation}, ${newNea.orbit_class} saved in the database successfully.`})
+        })
+    } catch (error) {
+        res.status(400).json({msg: "Bad Request."})
     }
 };
