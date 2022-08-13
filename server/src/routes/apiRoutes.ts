@@ -10,7 +10,7 @@ apiRouter.get('/landings/mass/:mass', getLandingsByMass);
 apiRouter.get('/landings/class/:class', getLandingsByClass);
 apiRouter.post('/landings/create', createLanding);
 apiRouter.put('/landings/edit', editLanding);
-apiRouter.delete('/landings/delete/:id', deleteLanding);
+apiRouter.delete('/landings/delete', deleteLanding);
 
 apiRouter.get('/neas', getAllNeas);
 apiRouter.post('/neas/create', createNeas);

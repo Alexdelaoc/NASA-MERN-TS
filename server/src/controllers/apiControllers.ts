@@ -97,8 +97,9 @@ export const editLanding = async (req: Request, res: Response) => {
 
 export const deleteLanding = async (req: Request, res: Response) => {
     try {
-        const id = req.params.id;
-        await LandingSchema.deleteMany({ id: id })
+        const { id } = req.body;
+        const filter = { id: id };
+        LandingSchema.deleteMany(filter)
         .then(result => {
             result.deletedCount == 1 
             ? res.status(200).json({ msg: `${result.deletedCount} landing deleted.` })
