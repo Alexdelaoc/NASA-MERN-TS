@@ -100,7 +100,6 @@ export const deleteLanding = async (req: Request, res: Response) => {
         const id = req.params.id;
         await LandingSchema.deleteMany({ id: id })
         .then(result => {
-            console.log(result);
             result.deletedCount == 1 
             ? res.status(200).json({ msg: `${result.deletedCount} landing deleted.` })
             : res.status(200).json({ msg: `${result.deletedCount} landings deleted.` })
@@ -145,6 +144,22 @@ export const editNea = async (req: Request, res: Response) => {
         await NeaSchema.findOneAndUpdate(filter, update, {new: true})
         .then(result => {
             res.status(201).json({ msg: `Near Earth Object with designation ${filter.designation} was updated successfully: ${result}`})
+        })
+    } catch (error) {
+        console.error(error);
+        res.status(400).json({msg: "Bad request."})
+    }
+};
+
+export const deleteNeas = async (req: Request, res: Response) => {
+    try {
+        const { designation } = req.body;
+        const filter = { designation: designation }
+        NeaSchema.deleteMany(filter)
+        .then(result => {
+            result.deletedCount == 1 
+            ? res.status(200).json({ msg: `${result.deletedCount} landing deleted.` })
+            : res.status(200).json({ msg: `${result.deletedCount} landings deleted.` })
         })
     } catch (error) {
         console.error(error);
