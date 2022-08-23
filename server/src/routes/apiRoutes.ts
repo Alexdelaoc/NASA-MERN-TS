@@ -7,7 +7,6 @@ const apiRouter: Router = Router();
 apiRouter.get('/landings', getLandings);
 apiRouter.get('/landings/name/:name', getLandingsByName);
 apiRouter.get('/landings/mass/:mass', getLandingsByMass);
-//apiRouter.get('/landings/minimum_mass/:minimum_mass', getLandingsByMinMass);
 apiRouter.get('/landings/class/:class', getLandingsByClass);
 apiRouter.post('/landings/create', createLanding);
 apiRouter.put('/landings/edit', editLanding);
