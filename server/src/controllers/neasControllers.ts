@@ -2,7 +2,7 @@ import { CallbackError } from 'mongoose';
 import { Request, Response } from "express";
 import NeaSchema, { INea } from './../models/neas';
 
-export const getAllNeas = async (req: Request, res: Response) => {
+export const getNeas = async (req: Request, res: Response) => {
     try {
         let data = await NeaSchema.find({}, "-_id");
         data.length == 0

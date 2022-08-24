@@ -2,6 +2,7 @@ import { Schema, Document, model, Date } from "mongoose";
 
 export interface INea extends Document {
     designation: string,
+    discovery_date: string,
     h_mag: string,
     moid_au: string,
     q_au_1: string,
@@ -19,8 +20,8 @@ const NeaSchema = new Schema ({
         trim: true
     },
     discovery_date: {
-        type: Date,
-        required: false,
+        type: String,
+        required: true,
         trim: true
     },
     h_mag: {
