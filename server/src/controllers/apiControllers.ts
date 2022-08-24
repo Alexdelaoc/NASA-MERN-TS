@@ -57,7 +57,7 @@ export const getLandings = async (req: Request<RequestParams, ResponseBody, Requ
             }
 
         } else if (req.query.to) {
-            const years = { from: req.query.to };
+            const years = { to: req.query.to };
             const data = await getLandingsToYear(years);
             if (!data || data.length === 0) {
                 res.status(200).json({ 

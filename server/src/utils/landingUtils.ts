@@ -12,7 +12,6 @@ export const getLandingsByQuery = async (mass: Number) => {
 
 export const getLandingsInRange = async (years: any) => {
     try {
-        console.log(years);
         const data = await LandingSchema.find({year: {$gte: years.from, $lt: years.to}}).sort({year: 1});
         return data
     } catch (error) {
