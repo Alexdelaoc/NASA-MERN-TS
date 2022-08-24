@@ -13,7 +13,7 @@ export const getLandingsByQuery = async (mass: Number) => {
 export const getLandingsInRange = async (years: any) => {
     try {
         console.log(years);
-        const data = await LandingSchema.find({year: {$gte: years.from, $lt: years.to}});
+        const data = await LandingSchema.find({year: {$gte: years.from, $lt: years.to}}).sort({year: 1});
         return data
     } catch (error) {
         console.log(error);
@@ -22,7 +22,7 @@ export const getLandingsInRange = async (years: any) => {
 
 export const getLandingsFromYear = async (years: any) => {
     try {
-        const data = await LandingSchema.find({year: {$gte: years.from}});
+        const data = await LandingSchema.find({year: {$gte: years.from}}).sort({year: 1});
         return data
     } catch (error) {
         console.log(error);
@@ -31,7 +31,7 @@ export const getLandingsFromYear = async (years: any) => {
 
 export const getLandingsToYear = async (years: any) => {
     try {
-        const data = await LandingSchema.find({year: {$lte: years.to}});
+        const data = await LandingSchema.find({year: {$lte: years.to}}).sort({year: 1});
         return data
     } catch (error) {
         console.log(error);

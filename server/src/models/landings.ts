@@ -7,6 +7,7 @@ export interface ILanding extends Document {
     recclass: string,
     mass: number,
     fall: string,
+    year: string,
     reclat: string,
     reclong: string,
 }
@@ -43,8 +44,8 @@ const LandingSchema = new Schema({
         trim: true
     },
     year: {
-        type: Date,
-        required: false,
+        type: String,
+        required: true,
         trim: true
     },
     reclat: {
