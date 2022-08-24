@@ -1,7 +1,8 @@
 import { Router } from "express"; // Creating a new Router() object. Importing Express Types.
-import { getLandings, getLandingsByName, getLandingsByMass, getLandingsByClass, createLanding, editLanding, deleteLanding, getAllNeas, createNeas, editNea, deleteNeas } from "../controllers/apiControllers";
-const apiRouter: Router = Router();
+import { getLandings, getLandingsByName, getLandingsByMass, getLandingsByClass, createLanding, editLanding, deleteLanding  } from "../controllers/landingsControllers";
+import { getAllNeas, createNeas, editNea, deleteNeas } from "../controllers/neasControllers";
 
+const apiRouter: Router = Router();
 
 // Controllers here 👇
 apiRouter.get('/landings', getLandings);
