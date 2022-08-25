@@ -32,6 +32,8 @@ export const getNeas = async (req: Request, res: Response) => {
             } else {
                 res.status(200).json(data)
             }
+        } else if (req.query.class) {
+            
         } else {
             let data = await NeaSchema.find({}, "-_id");
             data.length == 0
