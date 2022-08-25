@@ -1,11 +1,28 @@
-import { getNeasInRange, getNeasFromYear } from './../utils/neasUtils';
+import { getNeasByOrbitClass, getNeasInRange, getNeasFromYear, getNeasToYear } from './../utils/neasUtils';
 import { CallbackError } from 'mongoose';
-import { Request, Response } from "express";
+import { query, Request, Response } from "express";
 import NeaSchema, { INea } from './../models/neas';
 
-export const getNeas = async (req: Request, res: Response) => {
+interface RequestParams { };
+interface ResponseBody { };
+interface RequestBody { };
+interface RequestQuery {
+    class: string,
+    from: number,
+    to: number
+};
+
+export const getNeas = async (req: Request<RequestParams, ResponseBody, RequestBody, RequestQuery>, res: Response) => {
     try {
-        if (req.query.from && req.query.to) {
+        if (req.query.class) {
+            const oClass = req.query.class;
+            const data = await getNeasByOrbitClass(oClass);
+            if (!data || data.length === 0) {
+                res.status(400).json({ msg: "Something went wrong" })
+            } else {
+                res.status(200).json(data)
+            }
+        } else if (req.query.from && req.query.to) {
             const years = {
                 from: req.query.from,
                 to: req.query.to
@@ -16,7 +33,8 @@ export const getNeas = async (req: Request, res: Response) => {
             } else {
                 res.status(200).json(data)
             }
-        } else if (req.query.from) {
+        }
+         else if (req.query.from) {
             const years = { from: req.query.from };
             const data = await getNeasFromYear(years);
             if (!data || data.length === 0) {
@@ -24,16 +42,15 @@ export const getNeas = async (req: Request, res: Response) => {
             } else {
                 res.status(200).json(data)
             }
-        } else if (req.query.to) {
+        }
+         else if (req.query.to) {
             const years = { from: req.query.to };
-            const data = await getNeasFromYear(years);
+            const data = await getNeasToYear(years);
             if (!data || data.length === 0) {
                 res.status(400).json({ msg: "Something went wrong" })
             } else {
                 res.status(200).json(data)
             }
-        } else if (req.query.class) {
-            
         } else {
             let data = await NeaSchema.find({}, "-_id");
             data.length == 0

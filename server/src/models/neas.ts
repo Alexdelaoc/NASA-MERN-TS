@@ -1,4 +1,4 @@
-import { Schema, Document, model, Date } from "mongoose";
+import { Schema, Document, model } from "mongoose";
 
 export interface INea extends Document {
     designation: string,
