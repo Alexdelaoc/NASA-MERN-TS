@@ -9,7 +9,9 @@ interface RequestBody { };
 interface RequestQuery {
     class: string,
     from: number,
-    to: number
+    to: number,
+    page: number,
+    limit: number
 };
 
 export const getNeas = async (req: Request<RequestParams, ResponseBody, RequestBody, RequestQuery>, res: Response) => {
@@ -50,7 +52,10 @@ export const getNeas = async (req: Request<RequestParams, ResponseBody, RequestB
                 res.status(200).json(data)
             }
         } else {
-            let data = await NeaSchema.find({}, "-_id");
+            const { page = 1, limit = 10 } = req.query
+            let data = await NeaSchema.find({}, "-_id")
+                .limit(limit * 1)
+                .skip((page - 1) * limit);;
             data.length == 0
                 ? res.status(400).json({ msg: "Something went wrong" })
                 : res.status(200).json(data)
