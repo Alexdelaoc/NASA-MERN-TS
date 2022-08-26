@@ -4,13 +4,19 @@ import LandingSchema, { ILanding } from "../models/landings";
 import { getLandingsByParams, getLandingsByQuery, getLandingsFromYear, getLandingsToYear, getLandingsInRange } from "../utils/landingUtils";
 
 // Defining the Interfaces from the Request Object so it gives no errors:
-interface RequestParams { };
+interface RequestParams {
+    name: string,
+    mass: number,
+    class: string
+};
 interface ResponseBody { };
 interface RequestBody { };
 interface RequestQuery {
     minimum_mass: number;
     from: number;
     to: number
+    page: number,
+    limit: number
 };
 
 export const getLandings = async (req: Request<RequestParams, ResponseBody, RequestBody, RequestQuery>, res: Response) => {
@@ -23,7 +29,7 @@ export const getLandings = async (req: Request<RequestParams, ResponseBody, Requ
             } else {
                 res.status(200).json(data)
             }
-            
+
         } else if (req.query.from && req.query.to) {
             const years = {
                 from: req.query.from,
@@ -31,10 +37,10 @@ export const getLandings = async (req: Request<RequestParams, ResponseBody, Requ
             };
             const data = await getLandingsInRange(years);
             if (!data || data.length === 0) {
-                res.status(200).json({ 
+                res.status(200).json({
                     msg: "No such landings for the mass provided.",
-                    log: `${console.log(data)}` 
-                })  
+                    log: `${console.log(data)}`
+                })
             } else {
                 res.status(200).json(data)
             }
@@ -43,10 +49,10 @@ export const getLandings = async (req: Request<RequestParams, ResponseBody, Requ
             const years = { from: req.query.from };
             const data = await getLandingsFromYear(years);
             if (!data || data.length === 0) {
-                res.status(200).json({ 
+                res.status(200).json({
                     msg: "No such landings for the mass provided.",
-                    log: `${console.log(data)}` 
-                })  
+                    log: `${console.log(data)}`
+                })
             } else {
                 res.status(200).json(data)
             }
@@ -55,16 +61,19 @@ export const getLandings = async (req: Request<RequestParams, ResponseBody, Requ
             const years = { to: req.query.to };
             const data = await getLandingsToYear(years);
             if (!data || data.length === 0) {
-                res.status(200).json({ 
+                res.status(200).json({
                     msg: "No such landings for the mass provided.",
-                    log: `${console.log(data)}` 
-                })  
+                    log: `${console.log(data)}`
+                })
             } else {
                 res.status(200).json(data)
             }
 
         } else {
-            let data = await LandingSchema.find({}, "-_id");
+            const { page = 1, limit = 10 } = req.query
+            let data = await LandingSchema.find({}, "-_id")
+                .limit(limit * 1)
+                .skip((page - 1) * limit);
             res.status(200).json(data);
         }
 
@@ -77,12 +86,12 @@ export const getLandings = async (req: Request<RequestParams, ResponseBody, Requ
     }
 };
 
-export const getLandingsByName = async (req: Request, res: Response) => {
+export const getLandingsByName = async (req: Request<RequestParams, ResponseBody, RequestBody, RequestQuery>, res: Response) => {
     try {
         const name = req.params.name;
         const filter = { name: name.charAt(0).toUpperCase() + name.slice(1).toLowerCase() };
         const data = await LandingSchema.find(filter, "-_id");
-        if (data.length == 0) {
+        if (!data || data.length == 0) {
             res.status(200).json({ msg: "No such landings for the name provided" });
         } else {
             res.status(200).json(data);
@@ -96,7 +105,7 @@ export const getLandingsByName = async (req: Request, res: Response) => {
     }
 };
 
-export const getLandingsByMass = async (req: Request, res: Response) => {
+export const getLandingsByMass = async (req: Request<RequestParams, ResponseBody, RequestBody, RequestQuery>, res: Response) => {
     try {
         const mass = req.params.mass;
         const data = await getLandingsByParams(mass);
@@ -114,11 +123,14 @@ export const getLandingsByMass = async (req: Request, res: Response) => {
     }
 };
 
-export const getLandingsByClass = async (req: Request, res: Response) => {
+export const getLandingsByClass = async (req: Request<RequestParams, ResponseBody, RequestBody, RequestQuery>, res: Response) => {
     try {
         const recclass = req.params.class;
         const filter = { recclass: recclass.toUpperCase() };
-        const data = await LandingSchema.find(filter, "-_id");
+        const { page = 1, limit = 10 } = req.query
+        const data = await LandingSchema.find(filter, "-_id")
+            .limit(limit * 1)
+            .skip((page - 1) * limit);;
         if (data.length == 0) {
             res.status(200).json({ msg: "No such landings for the class provided." })
         } else {

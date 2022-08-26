@@ -33,8 +33,7 @@ export const getNeas = async (req: Request<RequestParams, ResponseBody, RequestB
             } else {
                 res.status(200).json(data)
             }
-        }
-         else if (req.query.from) {
+        } else if (req.query.from) {
             const years = { from: req.query.from };
             const data = await getNeasFromYear(years);
             if (!data || data.length === 0) {
@@ -42,8 +41,7 @@ export const getNeas = async (req: Request<RequestParams, ResponseBody, RequestB
             } else {
                 res.status(200).json(data)
             }
-        }
-         else if (req.query.to) {
+        } else if (req.query.to) {
             const years = { from: req.query.to };
             const data = await getNeasToYear(years);
             if (!data || data.length === 0) {
