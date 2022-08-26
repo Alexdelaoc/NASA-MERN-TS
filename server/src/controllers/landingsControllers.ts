@@ -23,7 +23,8 @@ export const getLandings = async (req: Request<RequestParams, ResponseBody, Requ
     try {
         if (req.query.minimum_mass) {
             const minimum_mass = req.query.minimum_mass;
-            const data = await getLandingsByQuery(minimum_mass);
+            const { page = 1, limit = 10 } = req.query;
+            const data = await getLandingsByQuery(minimum_mass, page, limit);
             if (!data || data.length === 0) {
                 res.status(200).json({ msg: "No such landings for the mass provided." })
             } else {
@@ -35,7 +36,8 @@ export const getLandings = async (req: Request<RequestParams, ResponseBody, Requ
                 from: req.query.from,
                 to: req.query.to
             };
-            const data = await getLandingsInRange(years);
+            const { page = 1, limit = 10 } = req.query;
+            const data = await getLandingsInRange(years, page, limit);
             if (!data || data.length === 0) {
                 res.status(200).json({
                     msg: "No such landings for the mass provided.",
@@ -47,7 +49,8 @@ export const getLandings = async (req: Request<RequestParams, ResponseBody, Requ
 
         } else if (req.query.from) {
             const years = { from: req.query.from };
-            const data = await getLandingsFromYear(years);
+            const { page = 1, limit = 10 } = req.query;
+            const data = await getLandingsFromYear(years, page, limit);
             if (!data || data.length === 0) {
                 res.status(200).json({
                     msg: "No such landings for the mass provided.",
@@ -59,7 +62,8 @@ export const getLandings = async (req: Request<RequestParams, ResponseBody, Requ
 
         } else if (req.query.to) {
             const years = { to: req.query.to };
-            const data = await getLandingsToYear(years);
+            const { page = 1, limit = 10 } = req.query;
+            const data = await getLandingsToYear(years, page, limit);
             if (!data || data.length === 0) {
                 res.status(200).json({
                     msg: "No such landings for the mass provided.",
@@ -108,9 +112,8 @@ export const getLandingsByName = async (req: Request<RequestParams, ResponseBody
 export const getLandingsByMass = async (req: Request<RequestParams, ResponseBody, RequestBody, RequestQuery>, res: Response) => {
     try {
         const mass = req.params.mass;
-        
-        const { page = 1, limit = 10 } = req.query
-        const data = await getLandingsByParams(mass, req.query.page, req.query.limit);
+        const { page = 1, limit = 10 } = req.query;
+        const data = await getLandingsByParams(mass, page, limit);
         if (!data || data.length === 0) {
             res.status(200).json({ msg: "No such landings for the mass provided" })
         } else {

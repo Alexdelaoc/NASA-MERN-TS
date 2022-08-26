@@ -1,9 +1,10 @@
 import LandingSchema from "./../models/landings";
 
-export const getLandingsByQuery = async (mass: Number) => {
+export const getLandingsByQuery = async (mass: Number, page: any, limit: any) => {
     try {
         const data = await LandingSchema.find({ mass: { $gte: mass } }, "-_id")
-            .sort({ mass: 1 });
+            .limit(limit * 1)
+            .skip((page - 1) * limit);
         return data
     }
     catch (err) {
@@ -11,30 +12,33 @@ export const getLandingsByQuery = async (mass: Number) => {
     }
 };
 
-export const getLandingsInRange = async (years: any) => {
+export const getLandingsInRange = async (years: any, page: any, limit: any) => {
     try {
         const data = await LandingSchema.find({ year: { $gte: years.from, $lt: years.to } })
-            .sort({ year: 1 });
+            .limit(limit * 1)
+            .skip((page - 1) * limit);
         return data
     } catch (error) {
         console.log(error);
     }
 };
 
-export const getLandingsFromYear = async (years: any) => {
+export const getLandingsFromYear = async (years: any, page: any, limit: any) => {
     try {
         const data = await LandingSchema.find({ year: { $gte: years.from } })
-            .sort({ year: 1 });
+            .limit(limit * 1)
+            .skip((page - 1) * limit);
         return data
     } catch (error) {
         console.log(error);
     }
 };
 
-export const getLandingsToYear = async (years: any) => {
+export const getLandingsToYear = async (years: any, page: any, limit: any) => {
     try {
         const data = await LandingSchema.find({ year: { $lte: years.to } })
-            .sort({ year: 1 });
+            .limit(limit * 1)
+            .skip((page - 1) * limit);
         return data
     } catch (error) {
         console.log(error);
@@ -46,11 +50,10 @@ export const getLandingsByParams = async (mass: any, page: any, limit: any) => {
         if (mass) {
             const data = await LandingSchema.find({ mass: mass }, "-_id")
                 .limit(limit * 1)
-                .skip((page - 1) * limit)
-                .sort({ mass: 1 });
-return data;
+                .skip((page - 1) * limit);
+            return data;
         }
     } catch (error) {
-    console.log(error);
-}
+        console.log(error);
+    }
 };
