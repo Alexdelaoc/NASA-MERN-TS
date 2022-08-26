@@ -12,9 +12,9 @@ interface RequestParams {
 interface ResponseBody { };
 interface RequestBody { };
 interface RequestQuery {
-    minimum_mass: number;
-    from: number;
-    to: number
+    minimum_mass: number,
+    from: number,
+    to: number,
     page: number,
     limit: number
 };
@@ -108,7 +108,9 @@ export const getLandingsByName = async (req: Request<RequestParams, ResponseBody
 export const getLandingsByMass = async (req: Request<RequestParams, ResponseBody, RequestBody, RequestQuery>, res: Response) => {
     try {
         const mass = req.params.mass;
-        const data = await getLandingsByParams(mass);
+        
+        const { page = 1, limit = 10 } = req.query
+        const data = await getLandingsByParams(mass, req.query.page, req.query.limit);
         if (!data || data.length === 0) {
             res.status(200).json({ msg: "No such landings for the mass provided" })
         } else {

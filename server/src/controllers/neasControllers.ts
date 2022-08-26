@@ -1,6 +1,6 @@
 import { getNeasByOrbitClass, getNeasInRange, getNeasFromYear, getNeasToYear } from './../utils/neasUtils';
 import { CallbackError } from 'mongoose';
-import { query, Request, Response } from "express";
+import { Request, Response } from "express";
 import NeaSchema, { INea } from './../models/neas';
 
 interface RequestParams { };

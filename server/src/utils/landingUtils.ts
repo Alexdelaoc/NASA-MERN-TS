@@ -41,14 +41,16 @@ export const getLandingsToYear = async (years: any) => {
     }
 };
 
-export const getLandingsByParams = async (mass: any) => {
+export const getLandingsByParams = async (mass: any, page: any, limit: any) => {
     try {
         if (mass) {
             const data = await LandingSchema.find({ mass: mass }, "-_id")
+                .limit(limit * 1)
+                .skip((page - 1) * limit)
                 .sort({ mass: 1 });
-            return data;
+return data;
         }
     } catch (error) {
-        console.log(error);
-    }
+    console.log(error);
+}
 };
