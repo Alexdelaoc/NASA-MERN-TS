@@ -1,5 +1,6 @@
 require('dotenv').config();
 import { mongoDBConnection } from './config/mongodb';
+import { elephantDBConnection } from './config/elephantsql';
 
 import express from 'express'
 import cors from 'cors';
@@ -30,10 +31,11 @@ app.use('/api', apiRouter);
 (async () => {
     try {
         await mongoDBConnection();
+        await elephantDBConnection();
         app.listen(port, () => {
-            console.log(`App listening on port ${port}`);
+            console.log('\x1b[32m%s\x1b[0m', `App listening on port ${port}`);
         })
     } catch (error) {
-        console.log(`There was an error... ${error}`);
+        console.log('\x1b[31m%s\x1b[0m', `There was an error... ${error}`);
     }
 })(); // '(function here)()' automatically executes the function. No need to invoke it right after defining it.

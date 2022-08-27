@@ -34,7 +34,9 @@
     "helmet": "^5.1.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.3.8",
-    "morgan": "^1.10.0"
+    "morgan": "^1.10.0",
+    "pg": "^8.8.0",
+    "sequelize": "^6.21.4"
   },
   "devDependencies": {
     "@types/cors": "^2.8.12",

@@ -134,6 +134,7 @@ export const getLandingsByClass = async (req: Request<RequestParams, ResponseBod
         const filter = { recclass: recclass.toUpperCase() };
         const { page = 1, limit = 10 } = req.query
         const data = await LandingSchema.find(filter, "-_id")
+            .sort({ recclass: 1 })
             .limit(limit * 1)
             .skip((page - 1) * limit);;
         if (data.length == 0) {

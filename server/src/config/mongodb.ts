@@ -17,8 +17,8 @@ const configParams = {
 export const mongoDBConnection = async () => {
     try {
         await mongoose.connect(uri, configParams);
-        console.log('Now connected to MongoDB Atlas...');
+        console.log('\x1b[32m%s\x1b[0m', 'Now connected to MongoDB Atlas...');
     } catch (error) {
-        console.log(`Unable to connect to the Database: ${error}`);
+        console.log('\x1b[31m%s\x1b[0m', `Unable to connect to the Database: ${error}`);
     }
 };
