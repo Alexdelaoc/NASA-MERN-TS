@@ -136,7 +136,7 @@ export const getLandingsByClass = async (req: Request<RequestParams, ResponseBod
         const data = await LandingSchema.find(filter, "-_id")
             .sort({ recclass: 1 })
             .limit(limit * 1)
-            .skip((page - 1) * limit);;
+            .skip((page - 1) * limit);
         if (data.length == 0) {
             res.status(200).json({ msg: "No such landings for the class provided." })
         } else {

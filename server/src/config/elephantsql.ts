@@ -8,12 +8,12 @@ const databaseName: string | undefined = process.env.ELEPHANT_DATABASE;
 
 const conString: string = `postgres://${username}:${password}@${hostname}/${databaseName}`;
 
-const db = new Sequelize(conString);
+export const db = new Sequelize(conString);
 
 export const elephantDBConnection = async () => {
     try {
-        await db.authenticate();
-        console.log('\x1b[34m%s\x1b[0m', 'Now connected to ElephantSQL...');
+        await db.authenticate()
+            .then(console.log('\x1b[34m%s\x1b[0m', 'Now connected to ElephantSQL...'));
     } catch (error) {
         console.error('\x1b[31m%s\x1b[0m', 'Unable to connect to ElephantSQL:', error)
     }
