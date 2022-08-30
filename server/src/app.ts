@@ -12,6 +12,7 @@ const app = express();
 const port = process.env.PORT;
 
 import apiRouter from './routes/apiRoutes';
+import userRouter from './routes/userRoutes';
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -27,6 +28,7 @@ app.use(morgan('dev'));
 
 // Web router.
 app.use('/api', apiRouter);
+app.use('/user', userRouter);
 
 (async () => {
     try {
