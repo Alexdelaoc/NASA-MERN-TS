@@ -11,7 +11,7 @@ export interface IUser {
     isAdmin: boolean
 };
 
-const User = db.define('User', {
+export const User = db.define('User', {
     user_id: {
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV1,
@@ -37,16 +37,9 @@ const User = db.define('User', {
     refreshToken: {
         type: DataTypes.STRING,
         allowNull: true
-    },
-    isAdmin: {
-        type: DataTypes.BOOLEAN,
-        allowNull: false,
-        defaultValue: false
     }
 },
     {
         underscored: true,
         tableName: 'Users'
     });
-
-module.exports = User;
