@@ -1,6 +1,8 @@
 import { Request, Response } from "express";
 import { User } from "./../models/users";
 
+const bcrypt = require('bcrypt');
+
 export const signUp = async (req: Request, res: Response) => {
     const { firstName, lastName, email, password } = req.body;
     try {

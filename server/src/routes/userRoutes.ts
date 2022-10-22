@@ -3,6 +3,7 @@ import { Router } from "express";
 
 const userRouter: Router = Router();
 
+
 userRouter.post('/signup', signUp);
 userRouter.get('/login');
 userRouter.get('/logout');
