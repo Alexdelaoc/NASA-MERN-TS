@@ -37,6 +37,10 @@ export const User = db.define('User', {
     refreshToken: {
         type: DataTypes.STRING,
         allowNull: true
+    },
+    logged: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false
     }
 },
     {
