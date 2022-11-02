@@ -7,7 +7,8 @@
     "start": "node dist/app.js",
     "build": "tsc",
     "dev": "ts-node-dev src/app.ts",
-    "test": "jest"
+    "test": "jest",
+    "test:watch": "jest --watchAll"
   },
   "repository": {
     "type": "git",
@@ -19,8 +20,14 @@
     "TypeScript",
     "OutterSpace",
     "MongoDB",
+    "mongoose",
     "Express",
-    "NodeJS"
+    "NodeJS",
+    "SQL",
+    "Sequelize",
+    "JSONWebToken",
+    "Jest",
+    "React"
   ],
   "author": "Alejandro de la Orden Collado",
   "license": "ISC",

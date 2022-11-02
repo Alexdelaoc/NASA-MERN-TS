@@ -21,7 +21,7 @@ export const signUp = async (req: Request, res: Response) => {
     if (!user && validateEmail(email) && validatePassword(password)) {
 
         try {
-            console.log(User)
+            console.log(User);
             User.create({ "firstName": firstName, "lastName": lastName, "email": email, "password": hashedPassword });
             res.status(200).json({ msg: `Welcome aboard ${req.body.firstName}, your user was created successfully.` })
         } catch (error) {
@@ -30,6 +30,6 @@ export const signUp = async (req: Request, res: Response) => {
         }
 
     } else {
-        res.status(400).json({ msg: "Invalid email or password" })
+        res.status(400).json({ msg: "Invalid email or password." })
     }
-}
+};
