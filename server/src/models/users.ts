@@ -42,4 +42,5 @@ export const User = db.define('User', {
     {
         underscored: true,
         tableName: 'Users'
-    });
+    }
+);
